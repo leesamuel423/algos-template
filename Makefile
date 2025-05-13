@@ -5,10 +5,11 @@ SHELL := /bin/bash
 GREEN := \033[0;32m
 NC := \033[0m # No Color
 
-.PHONY: help go java py cpp test clean
+.PHONY: help setup go java py cpp test clean
 
 help:
 	@echo "Usage:"
+	@echo "  make setup     	- Set execute permissions for all scripts"
 	@echo "  make go 123    	- Create new Go problem"
 	@echo "  make java 123  	- Create new Java problem"
 	@echo "  make py 123    	- Create new Python problem"
@@ -16,6 +17,11 @@ help:
 	@echo "  make test      	- Run all tests"
 	@echo "  make test go/0001 	- Run specific test"
 	@echo "  make clean     	- Clean Bazel artifacts"
+
+setup:
+	@echo "Setting execute permissions for all scripts..."
+	@chmod +x scripts/*.py
+	@echo -e "${GREEN}Successfully set execute permissions${NC}"
 
 # Create new problems
 go:

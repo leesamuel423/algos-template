@@ -1,0 +1,16 @@
+java_library(
+    name = "main",
+    srcs = ["Main.java"],
+    visibility = ["//visibility:public"],
+)
+
+java_test(
+    name = "test",
+    size = "small",
+    srcs = ["MainTest.java"],
+    test_class = "MainTest",
+    deps = [
+      ":main",
+      "@maven//:junit_junit"
+    ],
+)

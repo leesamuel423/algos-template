@@ -14,7 +14,7 @@ def create_problem(number):
     # Create BUILD.bazel
     build_content = """java_library(
     name = "main",
-    srcs = ["Solution.java"],
+    srcs = ["Main.java"],
     visibility = ["//visibility:public"],
 )
 

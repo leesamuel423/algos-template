@@ -17,7 +17,6 @@ def create_problem(number):
 go_library(
     name = "solution",
     srcs = ["solution.go"],
-    importpath = "github.com/username/algo-grind/go/{number}",
     visibility = ["//visibility:public"],
 )
 
