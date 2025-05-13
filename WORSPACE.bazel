@@ -1,0 +1,61 @@
+# import http_archive rules from Bazel's built-in tools
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+################# JAVA ##############################
+# version + checksum for rules_jvm_external
+RULES_JVM_EXTERNAL_TAG = "4.5"
+RULES_JVM_EXTERNAL_SHA = "b17d7388feb9bfa7f2fa09031b32707df529f26c91ab9e5d909eb1676badd9a6"
+
+# download + configure rules_jvm_external -> Maven dependency management
+http_archive(
+    name = "rules_jvm_external",
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+)
+
+# load + initialize rules_jvm_external dependencies
+load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+rules_jvm_external_deps()
+
+# set up rules_jvm_external
+load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+rules_jvm_external_setup()
+
+# load maven_install rule for managing Maven dependencies
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+
+# configure Maven dependencies and repos
+maven_install(
+    artifacts = [
+        "junit:junit:4.13.2", # Junit testing framework
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2", # maven central repo
+    ],
+)
+
+################# C++ ##############################
+# download + configure google test framework for c++
+http_archive(
+    name = "com_google_googletest",
+    urls = ["https://github.com/google/googletest/archive/release-1.11.0.zip"],
+    sha256 = "353571c2440176ded91c2de6d6cd88ddd41401d14692ec1f99e35d013feda55a",
+    strip_prefix = "googletest-release-1.11.0",
+)
+
+################# GO ###############################
+
+# download + configure rules_go for go language support
+http_archive(
+    name = "io_bazel_rules_go",
+    sha256 = "0936c9bc3c4321ee372cb8f66dd972d368cb940ed01a9ba9fd7debcf0093f09b",
+    urls = [
+        "https://github.com/bazel-contrib/rules_go/releases/download/v0.51.0/rules_go-v0.51.0.zip",
+    ],
+)
+
+# load + initialize go rules and toolchain
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+go_rules_dependencies()
+go_register_toolchains(version = "1.23.4")
